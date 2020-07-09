@@ -40,6 +40,13 @@ public class WordImage {
         this.imagePath = imagePath;
     }
 
+    public WordImage(String imageName, String imagePath,int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.imageName = imageName;
+        this.imagePath = imagePath;
+    }
+
     public int getWidth() {
         return width;
     }

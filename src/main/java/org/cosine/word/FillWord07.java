@@ -58,6 +58,21 @@ public class FillWord07 {
     }
 
     /**
+     * 填充word
+     * @param template 网络地址 或 模板路径（先对路径 | 绝对路径）
+     * @param map 填充参数
+     * @return 填充后的文档
+     * @exception  IOException  if an I/O error occurs. In particular,
+     *             an <code>IOException</code> may be thrown if the
+     *             output stream has been closed.
+     */
+    public XWPFDocument fillWord(String template, Map<String, Object> map) throws IOException {
+        XWPFDocument xwpfDocument = TemplateManager.getXWPFDocument(template);
+        this.fillWord(xwpfDocument, map);
+        return xwpfDocument;
+    }
+
+    /**
      * 同一个模板，填充多组数据
      * @param template 网络地址 或 模板路径（先对路径 | 绝对路径）
      * @param list 模板参数
@@ -159,7 +174,8 @@ public class FillWord07 {
      * @param map 填充参数
      */
     private void fillAllParagraph(List<XWPFParagraph> paragraphs, Map<String, Object> map) {
-        for (XWPFParagraph paragraph : paragraphs) {
+        for(int i = 0; i < paragraphs.size(); ++i) {
+            XWPFParagraph paragraph = paragraphs.get(i);
             if (paragraph.getText().contains(ElLabel.START_LABEL)) {
                 this.fillThisParagraph(paragraph, map);
             }

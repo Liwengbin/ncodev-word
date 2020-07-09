@@ -31,6 +31,16 @@ public class FillWordUtil {
     }
 
     /**
+     * 填充数据到word中
+     * @param template 模板地址
+     * @param map 解析数据源
+     * @return XWPFDocument文档对象
+     */
+    public static XWPFDocument exportWord07(String template, Map<String, Object> map) throws IOException {
+        return new FillWord07().fillWord(template, map);
+    }
+
+    /**
      * 解析Word2007版本
      * @param template 模板地址
      * @param list 解析数据源
