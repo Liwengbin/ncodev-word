@@ -55,6 +55,9 @@ public class FillWord03 {
             if(map.containsKey(key)){
                 Object value = map.get(key);
                 text = String.valueOf(value);
+                if(text.contains("\n")){
+                    text = text.replace('\n', (char) 11);
+                }
             }
             range.replaceText(ElLabel.START_LABEL + key + ElLabel.END_LABEL,text);
         }
