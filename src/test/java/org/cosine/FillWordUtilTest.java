@@ -1,5 +1,7 @@
 package org.cosine;
 
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.cosine.model.ElLabel;
@@ -33,11 +35,17 @@ public class FillWordUtilTest {
         map.put("time","2020年7月5日");
         map.put("nation","汉族");
 
+        // 家庭信息 1条数据
+        map.put("name","张三");
+        map.put("age","56");
+        map.put("relation","父亲");
+        map.put("familyphone","18630384323");
+        map.put("job","云南大学教授");
     }
 
     @Test
     public void exportWord07() {
-        map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员）" + ElLabel.CARRIAGE_RETURN_ESCAPE + "2014.09-2020.07 云南昆明 代码搬运工");
+        map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员，获得抬杠金奖）" + ElLabel.CARRIAGE_RETURN_ESCAPE + "2014.09-2020.07 云南昆明 代码搬运工");
         try {
             File file = new File("D:/temporary/07赴台学生备案资料登记表.docx");
             if (file.exists() || file.createNewFile()){
@@ -54,7 +62,7 @@ public class FillWordUtilTest {
 
     @Test
     public void exportWord03() {
-        map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员）\n2014.09-2020.07 云南昆明 代码搬运工");
+        map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员，获得抬杠金奖）\n2014.09-2020.07 云南昆明 代码搬运工");
         try {
             File file = new File("D:/temporary/03赴台学生备案资料登记表.doc");
             if (file.exists() || file.createNewFile()){
@@ -70,7 +78,17 @@ public class FillWordUtilTest {
 
 
     @Test
-    public void exportFlWord03() {
-
+    public void exportFlWord() {
+        map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员，获得抬杠金奖）" + "<w:p/>" + "2014.09-2020.07 云南昆明 代码搬运工");
+        try {
+            File file = new File("D:/temporary/03赴台学生备案资料登记表(xml).doc");
+            if (file.exists() || file.createNewFile()){
+                OutputStream out = new FileOutputStream(file);
+                FillWordUtil.exportFlWord("/template/03赴台学生备案资料登记表.xml", Configuration.VERSION_2_3_0,out,map);
+                out.close();
+            }
+        } catch (IOException | TemplateException e) {
+            e.printStackTrace();
+        }
     }
 }

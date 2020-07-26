@@ -8,8 +8,11 @@ import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
+import org.cosine.cache.FileLoader;
 import org.cosine.cache.TemplateManager;
 import org.cosine.model.ElLabel;
+import org.cosine.model.WordImage;
+import sun.misc.BASE64Encoder;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,6 +20,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -76,21 +80,6 @@ public class FillWord03 {
             params.add(matcher.group(i));
         }
         return params;
-    }
-
-    /*word03-freemarker*/
-
-    /**
-     * @param templatePath 网络地址 或 模板路径（先对路径 | 绝对路径）
-     * @param version freemarker的版本号 例如方式配置：Configuration.VERSION_2_3_0
-     * @param map 填充参数
-     * @return 模板
-     */
-    public void fillFlWord(String templatePath, Version version, OutputStream outputStream, Map<String, Object> map) throws IOException, TemplateException {
-        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            Template template = TemplateManager.getFlTemplate(templatePath, version);
-            template.process(map, out);
-        }
     }
 }
 

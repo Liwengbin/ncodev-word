@@ -4,6 +4,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.cosine.word.FillWord;
 import org.cosine.word.FillWord03;
 import org.cosine.word.FillWord07;
 
@@ -76,7 +77,7 @@ public class FillWordUtil {
      * @param outputStream 输出流，内部不关闭此流
      * @param map 解析数据源
      */
-    public static void exportWord03(String template, Version version, OutputStream outputStream, Map<String, Object> map) throws IOException, TemplateException {
-        new FillWord03().fillFlWord(template, version,outputStream,map);
+    public static void exportFlWord(String template, Version version, OutputStream outputStream, Map<String, Object> map) throws IOException, TemplateException {
+        new FillWord().fillFlWord(template, version,outputStream,map);
     }
 }

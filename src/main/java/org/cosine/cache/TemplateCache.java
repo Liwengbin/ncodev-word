@@ -3,12 +3,10 @@ package org.cosine.cache;
 import freemarker.cache.ByteArrayTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateNotFoundException;
 import freemarker.template.Version;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.util.Arrays;
 
 /**
@@ -22,7 +20,7 @@ public class TemplateCache {
      */
     public static final ThreadLocal<FileLoader> LOCAL_TEMPLATE_LOADER;
 
-    public static final ByteArrayTemplateLoader TEMPLATE_LOADER = new ByteArrayTemplateLoader();
+    public static Configuration TEMPLATE_CONFIG;
 
     static {
         LOCAL_TEMPLATE_LOADER = new ThreadLocal<>();
@@ -50,14 +48,32 @@ public class TemplateCache {
         return new ByteArrayInputStream(result);
     }
 
+    /**
+     * 获取freemarker模板
+     * @param template 模板地址
+     * @param version freemarker版本
+     * @return 模板
+     * @throws IOException if an I/O error occurs. In particular,
+     *         an <code>IOException</code> may be thrown if the
+     *         output stream has been closed.
+     */
     public static Template getFlTemplate(String template, Version version) throws IOException {
-        if(TEMPLATE_LOADER.findTemplateSource(template) == null){
+        if(TEMPLATE_CONFIG == null){
+            TEMPLATE_CONFIG = new Configuration(version);
+            TEMPLATE_CONFIG.setDefaultEncoding("UTF-8");
+        }
+        String templateKey = template.replace(File.separator,"_").replace("//","_").replace("/","_").replace(".","_");
+        Template temp;
+        try {
+            temp = TEMPLATE_CONFIG.getTemplate(templateKey);
+        } catch (TemplateNotFoundException e){
             FileLoader fileLoader = new FileLoader();
             byte[] result = fileLoader.loaderTemplate(template);
-            TEMPLATE_LOADER.putTemplate(template,result);
+            ByteArrayTemplateLoader templateLoader = new ByteArrayTemplateLoader();
+            templateLoader.putTemplate(templateKey,result);
+            TEMPLATE_CONFIG.setTemplateLoader(templateLoader);
+            temp = TEMPLATE_CONFIG.getTemplate(templateKey);
         }
-        Configuration config = new Configuration(version);
-        config.setDefaultEncoding("UTF-8");
-        return config.getTemplate(template);
+        return temp;
     }
 }
