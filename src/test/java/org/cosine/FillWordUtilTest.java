@@ -13,7 +13,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FillWordUtilTest {
     private static final HashMap<String, Object> map = new HashMap<>();
@@ -91,4 +94,60 @@ public class FillWordUtilTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 03简历带缩进和悬挂格式
+     */
+    @Test
+    public void exportFlWordResume() {
+        List<String> resumes = new ArrayList<>();
+        resumes.add("1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员，获得抬杠金奖）");
+        resumes.add("2014.09-2020.07 云南昆明 代码搬运工");
+        map.put("resumes",resumes);
+        try {
+            File file = new File("D:/temporary/03简历带缩进和悬挂格式(xml).doc");
+            if (file.exists() || file.createNewFile()){
+                OutputStream out = new FileOutputStream(file);
+                FillWordUtil.exportFlWord("/template/03简历带缩进和悬挂格式.xml", Configuration.VERSION_2_3_0,out,map);
+                out.close();
+            }
+        } catch (IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 03家庭成员退出
+     */
+    @Test
+    public void exportFlWordFamily() {
+        List<Map<String,String>> familyList = new ArrayList<>();
+        Map<String,String> family = new HashMap<>();
+        family.put("name","张三");
+        family.put("age","56");
+        family.put("relation","父亲");
+        family.put("familyphone","18630384323");
+        family.put("job","云南大学教授");
+        familyList.add(family);
+        Map<String,String> family2 = new HashMap<>();
+        family2.put("name","王翠花");
+        family2.put("age","30");
+        family2.put("relation","目前");
+        family2.put("familyphone","17639473234");
+        family2.put("job","云南师范大学教授");
+        familyList.add(family2);
+
+        map.put("familys",familyList);
+        try {
+            File file = new File("D:/temporary/03家庭成员退出(xml).doc");
+            if (file.exists() || file.createNewFile()){
+                OutputStream out = new FileOutputStream(file);
+                FillWordUtil.exportFlWord("/template/03家庭成员退出.xml", Configuration.VERSION_2_3_0,out,map);
+                out.close();
+            }
+        } catch (IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
