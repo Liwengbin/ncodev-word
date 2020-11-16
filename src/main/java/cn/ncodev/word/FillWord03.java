@@ -1,26 +1,12 @@
-package org.cosine.word;
+package cn.ncodev.word;
 
-import freemarker.cache.ByteArrayTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.Version;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
-import org.cosine.cache.FileLoader;
-import org.cosine.cache.TemplateManager;
-import org.cosine.model.ElLabel;
-import org.cosine.model.WordImage;
-import sun.misc.BASE64Encoder;
+import cn.ncodev.cache.TemplateManager;
+import cn.ncodev.model.ElLabel;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;

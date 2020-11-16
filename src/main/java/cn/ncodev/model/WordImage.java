@@ -1,4 +1,4 @@
-package org.cosine.model;
+package cn.ncodev.model;
 
 import org.apache.poi.xwpf.usermodel.Document;
 

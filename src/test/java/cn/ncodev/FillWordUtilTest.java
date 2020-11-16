@@ -1,11 +1,11 @@
-package org.cosine;
+package cn.ncodev;
 
+import cn.ncodev.model.ElLabel;
+import cn.ncodev.model.WordImage;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.cosine.model.ElLabel;
-import org.cosine.model.WordImage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

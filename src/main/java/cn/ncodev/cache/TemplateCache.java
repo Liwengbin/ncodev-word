@@ -1,4 +1,4 @@
-package org.cosine.cache;
+package cn.ncodev.cache;
 
 import freemarker.cache.ByteArrayTemplateLoader;
 import freemarker.template.Configuration;

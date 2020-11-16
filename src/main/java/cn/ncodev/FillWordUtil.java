@@ -1,12 +1,12 @@
-package org.cosine;
+package cn.ncodev;
 
+import cn.ncodev.word.FillWord;
+import cn.ncodev.word.FillWord03;
+import cn.ncodev.word.FillWord07;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.cosine.word.FillWord;
-import org.cosine.word.FillWord03;
-import org.cosine.word.FillWord07;
 
 import java.io.IOException;
 import java.io.InputStream;

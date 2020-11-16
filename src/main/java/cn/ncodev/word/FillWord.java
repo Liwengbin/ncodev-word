@@ -1,11 +1,11 @@
-package org.cosine.word;
+package cn.ncodev.word;
 
+import cn.ncodev.cache.TemplateManager;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
-import org.cosine.cache.FileLoader;
-import org.cosine.cache.TemplateManager;
-import org.cosine.model.WordImage;
+import cn.ncodev.cache.FileLoader;
+import cn.ncodev.model.WordImage;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;

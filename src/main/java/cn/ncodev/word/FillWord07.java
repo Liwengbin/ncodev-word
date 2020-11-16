@@ -1,4 +1,4 @@
-package org.cosine.word;
+package cn.ncodev.word;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -12,10 +12,10 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.cosine.cache.FileLoader;
-import org.cosine.cache.TemplateManager;
-import org.cosine.model.ElLabel;
-import org.cosine.model.WordImage;
+import cn.ncodev.cache.FileLoader;
+import cn.ncodev.cache.TemplateManager;
+import cn.ncodev.model.ElLabel;
+import cn.ncodev.model.WordImage;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFonts;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTInd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;

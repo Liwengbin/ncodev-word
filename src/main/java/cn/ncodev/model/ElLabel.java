@@ -1,4 +1,4 @@
-package org.cosine.model;
+package cn.ncodev.model;
 
 /**
  * 变量标签

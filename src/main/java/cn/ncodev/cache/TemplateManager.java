@@ -1,6 +1,5 @@
-package org.cosine.cache;
+package cn.ncodev.cache;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.poi.hwpf.HWPFDocument;

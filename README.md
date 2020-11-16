@@ -11,9 +11,9 @@
  * 文本回车换行：
  *  \r\n：硬回车：创建新段落，回车后不缩进
  *  \n ：软回车：不创建新段落，回车后自动缩进
- * 图片填充：标记方法同普通文本一样，map的值是org.cosine.model.WordImage类型；
+ * 图片填充：标记方法同普通文本一样，map的值是cn.ncodev.model.WordImage类型；
  * 列表填充：如下格式
  * |{{t::list t.name|t.age|t.sex}}|
  
  >三、具体使用方法
- * 请查看测试类`org.cosine.FillWordUtilTest`
+ * 请查看测试类`cn.ncodev.FillWordUtilTest`
