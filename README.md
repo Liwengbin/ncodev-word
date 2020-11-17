@@ -15,27 +15,33 @@
 > 具体如何使用可以查看测试类：`cn.ncodev.FillWordUtilTest`
 
 > 使用示例
-``` java
+```java
 /**
  * 07简历带缩进和悬挂格式
  */
 @Test
 public void exportWord07() {
- map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员，获得抬杠金奖）" + ElLabel.CARRIAGE_RETURN_ESCAPE + "2014.09-2020.07 云南昆明 代码搬运工");
+    map.put("resume","1994.11-2014.09 云南家里蹲土地管理员（1994.11-2014.9云南XXX人民教师抬杠员，获得抬杠金奖）" + ElLabel.CARRIAGE_RETURN_ESCAPE + "2014.09-2020.07 云南昆明 代码搬运工");
     try {
- File file = new File("D:/temporary/07赴台学生备案资料登记表.docx");
+        File file = new File("D:/temporary/07赴台学生备案资料登记表.docx");
         if (file.exists() || file.createNewFile()){
- OutputStream out = new FileOutputStream(file);
+            OutputStream out = new FileOutputStream(file);
             XWPFDocument doc = FillWordUtil.exportWord07("/template/07赴台学生备案资料登记表.docx",map);
             doc.write(out);
             out.close();
         }
- } catch (IOException e) {
- e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
 }
 ```
-![image.png](/img/bVcKnw0)
 
 > 安装
 * GitHub:[https://github.com/Liwengbin/ncodev-word](https://github.com/Liwengbin/ncodev-word)
+```xml
+<dependency>
+    <groupId>cn.ncodev.fill</groupId>
+    <artifactId>ncodev-word</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
