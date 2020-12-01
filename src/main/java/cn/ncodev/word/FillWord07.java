@@ -564,10 +564,10 @@ public class FillWord07 {
             ctPr.addNewVAlign().setVal(ctPr2.getVAlign().getVal());
         }
 
-        if (cttc2.getPList().size() > 0) {
-            CTP ctp = cttc2.getPList().get(0);
+        if (cttc2.getPArray().length > 0) {
+            CTP ctp = cttc2.getPArray()[0];
             if (ctp.getPPr() != null && ctp.getPPr().getJc() != null) {
-                cttc.getPList().get(0).addNewPPr().addNewJc().setVal(ctp.getPPr().getJc().getVal());
+                cttc.getPArray()[0].addNewPPr().addNewJc().setVal(ctp.getPPr().getJc().getVal());
             }
         }
 
