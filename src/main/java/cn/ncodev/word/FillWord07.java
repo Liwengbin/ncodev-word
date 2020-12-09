@@ -2,16 +2,7 @@ package cn.ncodev.word;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.Document;
-import org.apache.poi.xwpf.usermodel.IBody;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
-import org.apache.poi.xwpf.usermodel.XWPFHeader;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.poi.xwpf.usermodel.*;
 import cn.ncodev.cache.FileLoader;
 import cn.ncodev.cache.TemplateManager;
 import cn.ncodev.model.ElLabel;
@@ -91,14 +82,14 @@ public class FillWord07 {
             this.fillWord(xwpfDocument, list.get(0));
             //插入分页
             if(ifPagination) {
-                insertPage(xwpfDocument,xwpfDocument);
+                insertPage(xwpfDocument);
             }
             for (int i = 1; i < list.size(); i++) {
                 XWPFDocument tempDoc = TemplateManager.getXWPFDocument(template);
                 this.fillWord(tempDoc, list.get(i));
                 if(ifPagination) {
-                    if ((i + 1) < list.size()) {
-                        insertPage(tempDoc, xwpfDocument);
+                    if (i < list.size()) {
+                        insertPage(xwpfDocument);
                     }
                 }
                 xwpfDocument.getDocument().addNewBody().set(tempDoc.getDocument().getBody());
@@ -127,14 +118,14 @@ public class FillWord07 {
             this.fillWord(xwpfDocument, mapList.get(templates.get(0)));
             //插入分页
             if(ifPagination) {
-                insertPage(xwpfDocument,xwpfDocument);
+                insertPage(xwpfDocument);
             }
             for (int i = 1; i < templates.size(); i++) {
                 XWPFDocument tempDoc = TemplateManager.getXWPFDocument(templates.get(i));
                 this.fillWord(tempDoc, mapList.get(templates.get(i)));
                 if(ifPagination) {
-                    if ((i + 1) < templates.size()) {
-                        insertPage(tempDoc, tempDoc);
+                    if (i < templates.size()) {
+                        insertPage(xwpfDocument);
                     }
                 }
                 xwpfDocument.getDocument().addNewBody().set(tempDoc.getDocument().getBody());
@@ -158,14 +149,12 @@ public class FillWord07 {
 
     /**
      * 插入分页
-     * @param tempDoc 插入分页的上一个页面
      * @param xwpfDocument 插入分页的页面
      */
-    private static void insertPage(XWPFDocument tempDoc, XWPFDocument xwpfDocument){
+    private static void insertPage(XWPFDocument xwpfDocument){
         //创建一个分页段落，添加分页符
-        XWPFParagraph pageP = tempDoc.createParagraph();
-        copyXWPFParagraphCTP(pageP,xwpfDocument.getParagraphs().get(0));
-        pageP.setPageBreak(true);
+        xwpfDocument.createParagraph().createRun().addBreak(BreakType.PAGE);
+        // xwpfDocument.createParagraph().setPageBreak(true); 该方法回出现留白
     }
 
     /**
@@ -591,7 +580,10 @@ public class FillWord07 {
         if (tmpR != null) {
             cellR.setBold(tmpR.isBold());
             cellR.setItalic(tmpR.isItalic());
+            // 3.17
             cellR.setStrikeThrough(tmpR.isStrikeThrough());
+            // 3.9
+            // cellR.setStrike(tmpR.isStrike());
             cellR.setUnderline(tmpR.getUnderline());
             cellR.setColor(tmpR.getColor());
             cellR.setTextPosition(tmpR.getTextPosition());
