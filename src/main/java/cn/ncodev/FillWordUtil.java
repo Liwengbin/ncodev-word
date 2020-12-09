@@ -61,6 +61,16 @@ public class FillWordUtil {
     }
 
     /**
+     * 拼接Word文档，按顺序拼接
+     * @param docs word文档-有序集合
+     * @param ifPagination 各个文档之间是否插入分页
+     * @return 拼接后的文档
+     */
+    public static XWPFDocument mergeWord07(List<XWPFDocument> docs, boolean ifPagination) throws IOException {
+        return new FillWord07().mergeWord(docs,ifPagination);
+    }
+
+    /**
      * 填充数据到word中
      * @param template 模板地址
      * @param map 解析数据源

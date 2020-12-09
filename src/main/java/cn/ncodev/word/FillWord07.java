@@ -7,14 +7,8 @@ import cn.ncodev.cache.FileLoader;
 import cn.ncodev.cache.TemplateManager;
 import cn.ncodev.model.ElLabel;
 import cn.ncodev.model.WordImage;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTFonts;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTInd;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSpacing;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
+import org.apache.xmlbeans.XmlOptions;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -80,19 +74,15 @@ public class FillWord07 {
         } else {
             XWPFDocument xwpfDocument = TemplateManager.getXWPFDocument(template);
             this.fillWord(xwpfDocument, list.get(0));
-            //插入分页
-            if(ifPagination) {
-                insertPage(xwpfDocument);
-            }
             for (int i = 1; i < list.size(); i++) {
                 XWPFDocument tempDoc = TemplateManager.getXWPFDocument(template);
                 this.fillWord(tempDoc, list.get(i));
+                //插入分页
                 if(ifPagination) {
-                    if (i < list.size()) {
-                        insertPage(xwpfDocument);
-                    }
+                    insertPage(xwpfDocument);
                 }
-                xwpfDocument.getDocument().addNewBody().set(tempDoc.getDocument().getBody());
+                // 拼接Word
+                appendDocument(xwpfDocument, tempDoc);
             }
             return xwpfDocument;
         }
@@ -116,22 +106,44 @@ public class FillWord07 {
         } else {
             XWPFDocument xwpfDocument = TemplateManager.getXWPFDocument(templates.get(0));
             this.fillWord(xwpfDocument, mapList.get(templates.get(0)));
+            for (int i = 1; i < templates.size(); i++) {
+                XWPFDocument tempDoc = TemplateManager.getXWPFDocument(templates.get(i));
+                this.fillWord(tempDoc, mapList.get(templates.get(i)));
+                //插入分页
+                if(ifPagination) {
+                    insertPage(xwpfDocument);
+                }
+                // 拼接word
+                appendDocument(xwpfDocument, tempDoc);
+            }
+            return xwpfDocument;
+        }
+    }
+
+    /**
+     * 拼接Word文档，按顺序拼接
+     * @param docs word文档-有序集合
+     * @param ifPagination 各个文档之间是否插入分页
+     * @return 拼接后的文档
+     */
+    public XWPFDocument mergeWord(List<XWPFDocument> docs, boolean ifPagination) throws IOException {
+        if(docs == null || docs.isEmpty()){
+            throw new NullPointerException("XWPFDocument is null");
+        }
+        if(docs.size() == 1){
+            return docs.get(0);
+        }
+        XWPFDocument xwpfDocument = docs.get(0);
+        for (int i = 1; i < docs.size(); i++) {
+            XWPFDocument currentDoc = docs.get(i);
             //插入分页
             if(ifPagination) {
                 insertPage(xwpfDocument);
             }
-            for (int i = 1; i < templates.size(); i++) {
-                XWPFDocument tempDoc = TemplateManager.getXWPFDocument(templates.get(i));
-                this.fillWord(tempDoc, mapList.get(templates.get(i)));
-                if(ifPagination) {
-                    if (i < templates.size()) {
-                        insertPage(xwpfDocument);
-                    }
-                }
-                xwpfDocument.getDocument().addNewBody().set(tempDoc.getDocument().getBody());
-            }
-            return xwpfDocument;
+            // 拼接Word
+            appendDocument(xwpfDocument, currentDoc);
         }
+        return xwpfDocument;
     }
 
     private void fillWord(XWPFDocument xwpfDocument, Map<String, Object> map) {
@@ -155,6 +167,31 @@ public class FillWord07 {
         //创建一个分页段落，添加分页符
         xwpfDocument.createParagraph().createRun().addBreak(BreakType.PAGE);
         // xwpfDocument.createParagraph().setPageBreak(true); 该方法回出现留白
+    }
+
+    /**
+     * 拼接两个word的内容 FIXME 后置word中含有图片的，拼接后的word图加加载失败
+     * @param source 前置word
+     * @param append 后置word
+     */
+    private static void appendDocument(XWPFDocument source, XWPFDocument append) throws IOException {
+        CTBody src1Body = source.getDocument().getBody();
+        CTBody src2Body = append.getDocument().getBody();
+        XmlOptions optionsOuter = new XmlOptions();
+        optionsOuter.setSaveOuter();
+        String appendString = src2Body.xmlText(optionsOuter);
+        String srcString = src1Body.xmlText();
+        String prefix = srcString.substring(0,srcString.indexOf(">")+1);
+        String mainPart = srcString.substring(srcString.indexOf(">")+1,srcString.lastIndexOf("<"));
+        String sufix = srcString.substring( srcString.lastIndexOf("<") );
+        String addPart = appendString.substring(appendString.indexOf(">") + 1, appendString.lastIndexOf("<"));
+        CTBody makeBody;
+        try {
+            makeBody = CTBody.Factory.parse(prefix+mainPart+addPart+sufix);
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
+        src1Body.set(makeBody);
     }
 
     /**
